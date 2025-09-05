@@ -1,37 +1,66 @@
-# Step 1 get the base image
-# FROM gives you the base image to use
+#########################################################
+# Step 1: Choose a base image
+#########################################################
+# Every Dockerfile must start with a base image.
+# This acts like the "foundation" for your container.
+# Example: `node` includes Node.js + npm pre-installed.
+# You can also choose a lighter image such as `node:18-alpine`
+# to reduce the image size.
 FROM node
 
-# docker from default runs commands in root, if you have a seperate directory folder and would like to run
-# commands in it then you can add the command WORKDIR /directoryName to make docker run commands in there instead
+#########################################################
+# Step 2: Set the working directory inside the container
+#########################################################
+# By default, Docker runs all commands in the root (/) directory.
+# It's best practice to create a separate folder for your app.
+# WORKDIR will create the folder if it doesn’t exist
+# and switch into it for subsequent instructions.
 WORKDIR /app
 
-
-# Step 2 add files to your image - can use the COPY command.
-#   COPY . .
-# first dot is the path outside of the container where the files you want to copy into the image live
-# second dot is the path inside the image where you want to store the files.
-# containers have a seperate file system seperate to your system one.
-
-#COPY . ./
-# since we have a WORKDIR /app we dont need to define /app as the COPY Command below and can use ./ instead and use the realative path
-# but its better to be explicit so we can trace steps
-
+#########################################################
+# Step 3: Copy files into the image
+#########################################################
+# Containers have their own isolated filesystem.
+# COPY takes files from your local machine (build context)
+# and moves them into the container's filesystem.
+#
+# Syntax: COPY <source on host> <destination in container>
+#
+# Example: COPY . ./
+#   - The first `.` means "all files from current directory (host)"
+#   - The second `.` means "place them in current WORKDIR (/app)"
+#
+# Here we explicitly use `/app` to make it clearer where files go.
 COPY . /app
-# here we are copying everything into a new folder in the container called app.
-# note we replace the second . with /app as we want to store in a specific folder called app
 
+#########################################################
+# Step 4: Install dependencies
+#########################################################
+# RUN executes a command during the build process
+# (this happens once when the image is created).
+# In this case we install Node.js dependencies inside the container,
+# so our app is self-contained and portable.
 RUN npm install
 
-# an image should be a template for a container, we shouldnt have any code in here to start servers or the likes such as RUN node server.js
-# because they would be run every time an image is built and you are meant to run a container based on an image
-# we want to have all the code and dependancies in an image and use containers to run the image
-
-# docker containers are isolated so they also have their own networks, we need to allow the port to be listened to otherwise we wont be able to see the server
+#########################################################
+# Step 5: Expose a port
+#########################################################
+# Containers have isolated networks — if we don’t expose a port,
+# no external traffic can reach our app.
+# EXPOSE documents the port the container listens on.
+# Note: EXPOSE itself doesn’t actually publish the port —
+# we still need to map it using `docker run -p`.
 EXPOSE 80
 
+#########################################################
+# Step 6: Set the startup command
+#########################################################
+# CMD specifies the default command to run *when a container starts*.
+# This should be a long-running process like starting a server.
+#
+# Difference from RUN:
+# - RUN executes at build time (bakes things into the image)
+# - CMD executes at runtime (when container starts)
+#
+# Syntax: CMD ["executable", "param1", "param2"]
 CMD ["node", "server.js"]
-# using CMD will run the command when a container is started - this should be the last step in your docker file
-
-
-
