@@ -17,7 +17,7 @@ This section covers the **step-by-step process to build a Docker image**.
 3. [Quick Notes](#-quick-notes)
 4. [Handy Commands](#-handy-commands)
 5. [🐳 Docker Commands Cheat Sheet](#-docker-commands-cheat-sheet)
-6. [What’s Next](#-whats-next)
+6. [Docker Image Layer System](#-docker-image-layer-system)
 
 ---
 
@@ -91,5 +91,18 @@ flowchart LR
     A[Docker Image<br>(Blueprint)] --> B[Container<br>(Instance of Image)]
     B --> C[Running Application]
 ```
+
+# 🐳 Docker Image Layer System
+
+Docker images are built in **layers**. Each instruction in a `Dockerfile` creates a new immutable layer on top of the previous one.  
+Layers are **cached**, so if nothing changes in a layer, Docker reuses it to speed up builds.
+
+---
+
+## 🔹 How Layers Work
+- **Base Layer**: The starting point (e.g., `FROM ubuntu:20.04`).
+- **Instruction Layers**: Each `RUN`, `COPY`, or `ADD` creates a new layer.
+- **Metadata Layers**: Instructions like `WORKDIR`, `ENV`, and `EXPOSE` also form layers.
+- **Final Layer**: Defined by `CMD` or `ENTRYPOINT`.
 
 ---
