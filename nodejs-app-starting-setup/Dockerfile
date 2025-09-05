@@ -18,7 +18,24 @@ FROM node
 WORKDIR /app
 
 #########################################################
-# Step 3: Copy files into the image
+# Optimization => since docker files are built on layers
+# we now just copy the json package and do npm install before copying the code
+# This is becuase docker rebuilds the changed layer and all the other layers after it,
+# this saves having to RUN npm install every time we change the code.
+#########################################################
+COPY package.json /app
+
+#########################################################
+# Step 3: Install dependencies
+#########################################################
+# RUN executes a command during the build process
+# (this happens once when the image is created).
+# In this case we install Node.js dependencies inside the container,
+# so our app is self-contained and portable.
+RUN npm install
+
+#########################################################
+# Step 4: Copy files into the image
 #########################################################
 # Containers have their own isolated filesystem.
 # COPY takes files from your local machine (build context)
@@ -34,16 +51,7 @@ WORKDIR /app
 COPY . /app
 
 #########################################################
-# Step 4: Install dependencies
-#########################################################
-# RUN executes a command during the build process
-# (this happens once when the image is created).
-# In this case we install Node.js dependencies inside the container,
-# so our app is self-contained and portable.
-RUN npm install
-
-#########################################################
-# Step 5: Expose a port
+# Step 5: Expose a port (optional) still need to do docker run with the -p tag with localPort:containerPort to see
 #########################################################
 # Containers have isolated networks — if we don’t expose a port,
 # no external traffic can reach our app.
