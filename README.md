@@ -58,19 +58,19 @@ CMD ["your-program", "arg1", "arg2"]
 
 ## 🐳 Docker Commands Cheat Sheet
 
-| Command                                   | Description                                          |
-| ----------------------------------------- | ---------------------------------------------------- |
-| `docker pull <image>`                     | Download an image from Docker Hub (or registry).     |
-| `docker run <image>`                      | Start a container (pulls the image if not found).    |
-| `docker ps`                               | Show running containers.                             |
-| `docker ps -a`                            | Show all containers (running + stopped).             |
-| `docker stop <containerId>`               | Stop a running container.                            |
-| `docker rm <containerId>`                 | Remove a container.                                  |
-| `docker images`                           | List all images.                                     |
-| `docker rmi <imageId>`                    | Remove an image.                                     |
-| `docker run -d <image>`                   | Run container in detached mode (background).         |
-| `docker exec -it <containerId> /bin/bash` | Open interactive shell inside a container.           |
-| `docker run -it <image>`                  | Run a container interactively (keeps terminal open). |
+| Command                                   | Description                                          |                                                                                                                                                                                                |
+| ----------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `docker pull <image>`                     | Download an image from Docker Hub (or registry).     |                                                                                                                                                                                                |
+| `docker run <image>`                      | Start a container (pulls the image if not found).    |                                                                                                                                                                                                |
+| `docker ps`                               | Show running containers.                             |                                                                                                                                                                                                |
+| `docker ps -a`                            | Show all containers (running + stopped).             |                                                                                                                                                                                                |
+| `docker stop <containerId>`               | Stop a running container.                            |                                                                                                                                                                                                |
+| `docker rm <containerId>`                 | Remove a container.                                  |                                                                                                                                                                                                |
+| `docker images`                           | List all images.                                     |                                                                                                                                                                                                |
+| `docker rmi <imageId>`                    | Remove an image.                                     |                                                                                                                                                                                                |
+| \$1                                       | `docker run -p <hostPort>:<containerPort> <image>`   | Publish a container port to the host (`host:container`). Use multiple `-p` flags for several ports. Optional: `-p <hostIP>:<hostPort>:<containerPort>` or `-p <hostPort>:<containerPort>/udp`. |
+| `docker exec -it <containerId> /bin/bash` | Open interactive shell inside a container.           |                                                                                                                                                                                                |
+| `docker run -it <image>`                  | Run a container interactively (keeps terminal open). |                                                                                                                                                                                                |
 
 > **Tip:** If a container is still running, `docker rm` will fail. Use `docker stop <id>` first, or `docker rm -f <id>` to force removal.
 
@@ -93,4 +93,3 @@ flowchart LR
 ```
 
 ---
-
