@@ -88,8 +88,8 @@ CMD ["your-program", "arg1", "arg2"]
 
 ```mermaid
 flowchart LR
-    A[Docker Image<br>(Blueprint)] --> B[Container<br>(Instance of Image)]
-    B --> C[Running Application]
+    A["Docker Image\n(Blueprint)"] --> B["Container\n(Instance of Image)"]
+    B --> C["Running Application"]
 ```
 
 # 🐳 Docker Image Layer System
